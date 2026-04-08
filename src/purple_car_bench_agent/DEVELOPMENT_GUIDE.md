@@ -224,7 +224,7 @@ The server also accepts CLI arguments and environment variables for LLM configur
 
 1. **Start your agent:**
    ```bash
-   python server.py --host localhost --port 8080 --agent-llm "gemini/gemini-2.5-flash"
+   python server.py --host localhost --port 8080 --agent-llm "openai/qwen3.6-plus"
    ```
 
 2. **Configure the scenario** (`scenarios/scenario.toml`):
@@ -232,7 +232,7 @@ The server also accepts CLI arguments and environment variables for LLM configur
    [[participants]]
    name = "agent"
    url = "http://localhost:8080"
-   env = { GEMINI_API_KEY = "${GEMINI_API_KEY}" }
+   env = { DASHSCOPE_API_KEY = "${DASHSCOPE_API_KEY}", DASHSCOPE_BASE_URL = "${DASHSCOPE_BASE_URL}" }
    ```
 
 3. **Run evaluation** (in another terminal):

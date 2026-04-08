@@ -27,6 +27,18 @@ from logging_utils import configure_logger
 sys.path.pop(0)
 
 logger = configure_logger(role="agent", context="server")
+DEFAULT_DASHSCOPE_BASE_URL = "https://dashscope.aliyuncs.com/compatible-mode/v1"
+DEFAULT_QWEN_MODEL = "openai/qwen3.6-plus"
+
+
+def normalize_model_name(model: str) -> str:
+    """Normalize model name for litellm OpenAI-compatible DashScope usage."""
+    model = model.strip()
+    if model.startswith("openai/"):
+        return model
+    if model.lower().startswith("qwen"):
+        return f"openai/{model}"
+    return model
 
 
 def prepare_agent_card(url: str) -> AgentCard:
@@ -61,6 +73,12 @@ def main():
         default=None,  # Will use env var or fallback
         help="LLM model (can also be set via AGENT_LLM env var)"
     )
+    parser.add_argument(
+        "--dashscope-base-url",
+        type=str,
+        default=None,
+        help="DashScope OpenAI-compatible base URL (can also be set via DASHSCOPE_BASE_URL env var)",
+    )
     parser.add_argument("--temperature", type=float, default=0.0, help="Temperature for the LLM")
     parser.add_argument("--thinking", action="store_true", help="Enable thinking mode for the LLM")
     parser.add_argument("--reasoning-effort", type=str, default="medium", help="Reasoning effort level for the LLM")
@@ -70,7 +88,9 @@ def main():
     # Support both command-line args and environment variables
     # Priority: CLI args > env vars > default
     import os
-    agent_llm = args.agent_llm or os.getenv("AGENT_LLM", "gemini/gemini-2.5-flash")
+    agent_llm = normalize_model_name(args.agent_llm or os.getenv("AGENT_LLM", DEFAULT_QWEN_MODEL))
+    dashscope_api_key = os.getenv("DASHSCOPE_API_KEY")
+    dashscope_base_url = args.dashscope_base_url or os.getenv("DASHSCOPE_BASE_URL", DEFAULT_DASHSCOPE_BASE_URL)
     completion_kwargs = {
         "temperature": args.temperature or float(os.getenv("AGENT_TEMPERATURE", 0.0)),
         "thinking": args.thinking or (os.getenv("AGENT_THINKING", "false").lower() == "true"),
@@ -85,6 +105,8 @@ def main():
         thinking=completion_kwargs["thinking"],
         reasoning_effort=completion_kwargs["reasoning_effort"],
         interleaved_thinking=completion_kwargs["interleaved_thinking"],
+        dashscope_base_url=dashscope_base_url,
+        has_dashscope_api_key=bool(dashscope_api_key),
         host=args.host,
         port=args.port
     )
@@ -97,7 +119,9 @@ def main():
             temperature=completion_kwargs["temperature"], 
             thinking=completion_kwargs["thinking"], 
             reasoning_effort=completion_kwargs["reasoning_effort"], 
-            interleaved_thinking=completion_kwargs["interleaved_thinking"]
+            interleaved_thinking=completion_kwargs["interleaved_thinking"],
+            dashscope_api_key=dashscope_api_key,
+            dashscope_base_url=dashscope_base_url,
             ),
         task_store=InMemoryTaskStore(),
     )
