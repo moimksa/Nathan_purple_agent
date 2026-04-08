@@ -1,0 +1,34 @@
+# Example leaderboard scenario template for CAR-bench AgentBeats submission.
+# Copy this into your leaderboard fork as scenario.toml and replace placeholders.
+# WARNING: committing scenario.toml in the leaderboard fork can trigger paid evaluation workflows.
+
+[green_agent]
+# Keep this aligned with leaderboard instructions.
+# If leaderboard maintainers provide a fixed green agent ID, replace this value.
+agentbeats_id = "<LEADERBOARD_GREEN_AGENTBEATS_ID>"
+
+[[participants]]
+name = "purple-agent"
+agentbeats_id = "<YOUR_AGENTBEATS_ID>"
+
+# Set only values relevant to your selected model/provider.
+env = {
+  AGENT_LLM = "openai/<YOUR_MODEL_NAME>",
+  AGENT_TEMPERATURE = "0.0",
+  AGENT_REASONING_EFFORT = "medium",
+  AGENT_THINKING = "false",
+  AGENT_INTERLEAVED_THINKING = "false",
+  DASHSCOPE_API_KEY = "${DASHSCOPE_API_KEY}",
+  DASHSCOPE_BASE_URL = "${DASHSCOPE_BASE_URL}",
+  OPENAI_API_KEY = "${OPENAI_API_KEY}",
+  GEMINI_API_KEY = "${GEMINI_API_KEY}",
+  LOGURU_LEVEL = "${LOGURU_LEVEL}"
+}
+
+[config]
+num_trials = 3
+task_split = "test"
+tasks_base_num_tasks = -1
+tasks_hallucination_num_tasks = -1
+tasks_disambiguation_num_tasks = -1
+max_steps = 50

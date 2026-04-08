@@ -1,0 +1,3 @@
+# Abstract
+
+This repository provides a CAR-bench purple agent tailored for AgentBeats evaluation in the AgentX-AgentBeats competition. The implementation focuses on reliability under uncertainty: strict tool-call validation, required-argument checks, clarification-first behavior for incomplete requests, and explicit limitation handling when capabilities are unavailable. The public code and documentation are submission-oriented: reproducible container build for linux/amd64, local runtime/testing instructions, and leaderboard submission templates with placeholder-only configuration. No benchmark scores are claimed in this repository; official results should come only from leaderboard evaluation workflows.
