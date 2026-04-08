@@ -6,11 +6,18 @@ set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CAR_BENCH_DIR="$SCRIPT_DIR/car-bench"
+PYPROJECT_PATH="$CAR_BENCH_DIR/pyproject.toml"
 
 if [ -d "$CAR_BENCH_DIR" ]; then
-    echo "car-bench already exists at $CAR_BENCH_DIR"
-    echo "To re-download, remove the directory first: rm -rf $CAR_BENCH_DIR"
-    exit 0
+    if [ -f "$PYPROJECT_PATH" ]; then
+        echo "car-bench already exists at $CAR_BENCH_DIR"
+        echo "To re-download, remove the directory first: rm -rf $CAR_BENCH_DIR"
+        exit 0
+    fi
+
+    echo "Found incomplete car-bench directory at $CAR_BENCH_DIR (missing pyproject.toml)."
+    echo "Removing and re-cloning..."
+    rm -rf "$CAR_BENCH_DIR"
 fi
 
 echo "Cloning car-bench repository..."

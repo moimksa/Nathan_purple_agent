@@ -20,7 +20,7 @@ env = { GEMINI_API_KEY = "${GEMINI_API_KEY}", LOGURU_LEVEL = "${LOGURU_LEVEL}" }
 image = "ghcr.io/car-bench/car-bench-agentbeats-car-bench-agent:latest"
 name = "agent"
 # Environment variables - include all API keys the agent might need
-env = { ANTHROPIC_API_KEY = "${ANTHROPIC_API_KEY}", OPENAI_API_KEY = "${OPENAI_API_KEY}", GEMINI_API_KEY = "${GEMINI_API_KEY}", AGENT_LLM = "anthropic/claude-haiku-4-5-20251001", LOGURU_LEVEL = "${LOGURU_LEVEL}" }
+env = { DASHSCOPE_API_KEY = "${DASHSCOPE_API_KEY}", DASHSCOPE_BASE_URL = "${DASHSCOPE_BASE_URL}", OPENAI_API_KEY = "${OPENAI_API_KEY}", GEMINI_API_KEY = "${GEMINI_API_KEY}", AGENT_LLM = "openai/qwen3.6-plus", LOGURU_LEVEL = "${LOGURU_LEVEL}" }
 
 [config]
 # CAR-bench specific configuration

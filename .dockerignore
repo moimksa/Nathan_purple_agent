@@ -1,11 +1,18 @@
 .env
+.env.*
+!.env.example
 .DS_Store
 .python-version
 .venv
+.cache
+output
+.git
+archive/upstream/scenarios/car-bench/car-bench
 **/__pycache__
 **/*.pyc
+**/*.log
 
-# Include scenarios but exclude nested git repos and build artifacts
-scenarios/car-bench/car-bench/.git
-scenarios/car-bench/car-bench/results
-scenarios/car-bench/car-bench/**/*.egg-info
+# Exclude local benchmark checkout and generated artifacts
+archive/upstream/scenarios/car-bench/car-bench/.git
+archive/upstream/scenarios/car-bench/car-bench/results
+archive/upstream/scenarios/car-bench/car-bench/**/*.egg-info
