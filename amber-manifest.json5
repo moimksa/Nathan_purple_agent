@@ -1,26 +1,39 @@
 {
-  // Amber manifest for car_bench_agent (AgentX / AgentBeats)
+  // Amber manifest for Nathan Purple Agent (AgentX / AgentBeats)
   manifest_version: "0.1.0",
 
   config_schema: {
     type: "object",
-    properties: {},
-    additionalProperties: false,
+    properties: {
+      GEMINI_API_KEY: { type: "string" },
+      DASHSCOPE_API_KEY: { type: "string" },
+      DASHSCOPE_BASE_URL: { type: "string" },
+      AGENT_LLM: { type: "string" },
+      LOGURU_LEVEL: { type: "string" }
+    },
+    additionalProperties: true
   },
 
   program: {
     image: "ghcr.io/moimksa/nathan_purple_agent-purple-agent:0.1.0",
     entrypoint: "uv run src/purple_car_bench_agent/server.py --host 0.0.0.0 --port 8080",
-    network: {
-      endpoints: [{ name: "a2a_endpoint", port: 8080 }],
+    env: {
+      GEMINI_API_KEY: "${config.GEMINI_API_KEY}",
+      DASHSCOPE_API_KEY: "${config.DASHSCOPE_API_KEY}",
+      DASHSCOPE_BASE_URL: "${config.DASHSCOPE_BASE_URL}",
+      AGENT_LLM: "${config.AGENT_LLM}",
+      LOGURU_LEVEL: "${config.LOGURU_LEVEL}"
     },
+    network: {
+      endpoints: [{ name: "a2a_endpoint", port: 8080 }]
+    }
   },
 
   provides: {
-    a2a: { kind: "a2a", endpoint: "a2a_endpoint" },
+    a2a: { kind: "a2a", endpoint: "a2a_endpoint" }
   },
 
   exports: {
-    a2a: "a2a",
-  },
+    a2a: "a2a"
+  }
 }
