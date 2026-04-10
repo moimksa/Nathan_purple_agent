@@ -1,41 +1,38 @@
 {
   manifest_version: "0.1.0",
-
   config_schema: {
     type: "object",
     properties: {
-      GEMINI_API_KEY: { type: "string" },
-      DASHSCOPE_API_KEY: { type: "string" },
-      DASHSCOPE_BASE_URL: { type: "string" },
-      AGENT_LLM: { type: "string" },
-      AGENT_TEMPERATURE: { type: "number" },
-      AGENT_THINKING: { type: "string" },
-      LOGURU_LEVEL: { type: "string" }
+      gemini_api_key: { type: "string", secret: true },
+      dashscope_api_key: { type: "string", secret: true },
+      dashscope_base_url: { type: "string" },
+      agent_llm: { type: "string" },
+      agent_temperature: { type: "number" },
+      agent_thinking: { type: "string" },
+      loguru_level: { type: "string" }
     },
-    additionalProperties: true
+    required: ["gemini_api_key"],
+    additionalProperties: false
   },
-
   program: {
     image: "ghcr.io/moimksa/nathan_purple_agent-purple-agent:0.1.1",
     entrypoint: "uv run src/purple_car_bench_agent/server.py --host 0.0.0.0 --port 8080",
     env: {
-      GEMINI_API_KEY: "${config.GEMINI_API_KEY}",
-      DASHSCOPE_API_KEY: "${config.DASHSCOPE_API_KEY}",
-      DASHSCOPE_BASE_URL: "${config.DASHSCOPE_BASE_URL}",
-      AGENT_LLM: "${config.AGENT_LLM}",
-      AGENT_TEMPERATURE: "${config.AGENT_TEMPERATURE}",
-      AGENT_THINKING: "${config.AGENT_THINKING}",
-      LOGURU_LEVEL: "${config.LOGURU_LEVEL}"
+      GEMINI_API_KEY: "${config.gemini_api_key}",
+      DASHSCOPE_API_KEY: "${config.dashscope_api_key}",
+      DASHSCOPE_BASE_URL: "${config.dashscope_base_url}",
+      AGENT_LLM: "${config.agent_llm}",
+      AGENT_TEMPERATURE: "${config.agent_temperature}",
+      AGENT_THINKING: "${config.agent_thinking}",
+      LOGURU_LEVEL: "${config.loguru_level}"
     },
     network: {
       endpoints: [{ name: "a2a_endpoint", port: 8080 }]
     }
   },
-
   provides: {
     a2a: { kind: "a2a", endpoint: "a2a_endpoint" }
   },
-
   exports: {
     a2a: "a2a"
   }
